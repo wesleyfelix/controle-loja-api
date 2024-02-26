@@ -29,36 +29,34 @@ public class LojaController {
         return ResponseEntity.created(uri).body(new DetalhamentoLoja(loja));
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<DadosListagemMedico>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemLoja>> listar(@PageableDefault(size = 10, sort = {"razaoSocial"}) Pageable paginacao) {
+
+        var page = repository.findAll(paginacao).map(DadosListagemLoja::new);
+        return ResponseEntity.ok(page);
+    }
 //
-//        var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
-//        return ResponseEntity.ok(page);
-//    }
-//
-//    @PutMapping
-//    @Transactional
-//    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados){
-//        var medico = repository.getReferenceById(dados.id());
-//        medico.AtualizarInformacoes(dados);
-//
-//        return ResponseEntity.ok(new DetalhamentoMedico(medico));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    @Transactional
-//    public ResponseEntity excluir(@PathVariable Long id){
-//        var medico = repository.getReferenceById(id);
-//        medico.excluir();
-////        repository.deleteById(id);
-//        return ResponseEntity.noContent().build();
-//    }
-//
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity detalhar(@PathVariable Long id){
-//        var medico = repository.getReferenceById(id);
-//        return ResponseEntity.ok(new DetalhamentoMedico(medico));
-//    }
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoLoja dados){
+        var loja = repository.getReferenceById(dados.id());
+        loja.AtualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DetalhamentoLoja(loja));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id){
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        var loja = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DetalhamentoLoja(loja));
+    }
 
 }
